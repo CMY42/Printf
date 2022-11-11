@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 12:55:51 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/02 13:02:50 by cmansey          ###   ########.fr       */
+/*   Created: 2022/10/26 14:30:09 by cmansey           #+#    #+#             */
+/*   Updated: 2022/11/07 11:29:32 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+char	*ft_strchr(const char *s, int c)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
+	while (*s)
 	{
-		write(fd, &s[i], 1);
-		i++;
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
 	}
+	if (*s == (char)c)
+		return ((char *)s);
+	if (c == 0)
+		return ((char *)s);
+	return (NULL);
 }
+
+/*int main ()
+{
+	char *s = "Hello World";
+	printf("%s\n", (ft_strchr(s, 'W')));
+	printf("%s\n", (strchr(s, 'W')));
+}*/
