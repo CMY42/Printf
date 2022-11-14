@@ -6,14 +6,14 @@
 #    By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 12:01:18 by cmansey           #+#    #+#              #
-#    Updated: 2022/11/11 16:57:31 by cmansey          ###   ########.fr        #
+#    Updated: 2022/11/14 12:06:13 by cmansey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
 SRCS = ft_printf.c ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c \
-ft_strchr.c ft_strlen.c
+ft_strchr.c ft_strlen.c ft_putnbru_fd.c
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:34:14 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/11 15:25:35 by cmansey          ###   ########.fr       */
+/*   Updated: 2022/11/14 12:06:31 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *str);
+void	ft_putnbru_fd(unsigned int n, int fd);
 
 #endif
