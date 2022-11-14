@@ -6,7 +6,7 @@
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:38:01 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/14 15:23:43 by cmansey          ###   ########.fr       */
+/*   Updated: 2022/11/14 16:49:09 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct s_sc
 	int	widht;
 }			t_sc;
 
-void	ft_printhexa(unsigned int x, const char str)
+void	ft_printhexa(unsigned long long x, const char str)
 {
 	if (x == 0)
 	{
@@ -38,7 +38,7 @@ void	ft_printhexa(unsigned int x, const char str)
 				ft_putchar_fd((x + '0'), 1);
 			else
 			{
-				if (str == 'x')
+				if (str == 'x' || str == 'p')
 					ft_putchar_fd((x - 10 + 'a'), 1);
 				if (str == 'X')
 					ft_putchar_fd((x - 10 + 'A'), 1);
@@ -47,19 +47,35 @@ void	ft_printhexa(unsigned int x, const char str)
 	}
 }
 
-int	ft_intlenhexa(int nb, char c)
+int	ft_intlenhexa(unsigned long long nb)
 {
 	int	len;
 
 	len = 0;
 	if (nb == 0)
 		return (1);
-	while (nb && (c == 'x' || c == 'X'))
+	while (nb)
 	{
 		len++;
 		nb = nb / 16;
 	}
 	return (len);
+}
+
+int	ft_printp(unsigned long long p, const char str)
+{
+	int	i;
+
+	i = 0;
+	i += write(1, "0x", 2);
+	if (p == 0)
+		i += write(1, "0", 1);
+	else
+	{
+		ft_printhexa(p, str);
+		i += ft_intlenhexa((unsigned long) p);
+	}
+	return (i);
 }
 
 //VALEUR RETOUR
@@ -86,16 +102,7 @@ int	ft_intlen(int nb, char c)
 		neg = 0;
 		number = nb;
 	}
-	if (c == 'd' || c == 'i')
-	{
-		while (number)
-		{
-			number /= 10;
-			i++;
-		}
-		return (i + neg);
-	}
-	if (c == 'u')
+	if (c == 'd' || c == 'i' || c == 'u')
 	{
 		while (number)
 		{
@@ -114,6 +121,7 @@ const char	*ft_search_arg(va_list arg, const char *str, t_sc *sc)
 	unsigned int	x;
 	int				c;
 	unsigned int	u;
+	unsigned long	p;
 
 	if (*str == 'd' || *str == 'i')
 	{
@@ -137,9 +145,9 @@ const char	*ft_search_arg(va_list arg, const char *str, t_sc *sc)
 	}
 	else if (*str == 'x' || *str == 'X')
 	{
-		x = va_arg(arg, unsigned int);
-		ft_printhexa((unsigned long)x, *str);
-		(*sc).len += ft_intlenhexa((unsigned long)x, *str);
+		x = va_arg(arg, unsigned long);
+		ft_printhexa((unsigned long long)x, *str);
+		(*sc).len += ft_intlenhexa((unsigned long)x);
 	}
 	else if (*str == 'c')
 	{
@@ -157,6 +165,11 @@ const char	*ft_search_arg(va_list arg, const char *str, t_sc *sc)
 		u = va_arg(arg, unsigned int);
 		ft_putnbru_fd(u, 1);
 		(*sc).len += ft_intlen(u, *str);
+	}
+	else if (*str == 'p')
+	{
+		p = va_arg(arg, unsigned long long);
+		(*sc).len += ft_printp((unsigned long long)p, *str);
 	}
 	else
 		return (NULL);
