@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intlenid.c                                      :+:      :+:    :+:   */
+/*   ft_intlen_id.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:34:55 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/15 16:34:55 by cmansey          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:15:48 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	ft_intlenid(int nb, char c)
+int	ft_intlenid(int nb)
 {
 	int	i;
 	int	number;

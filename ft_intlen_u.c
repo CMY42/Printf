@@ -1,39 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intlenu.c                                       :+:      :+:    :+:   */
+/*   ft_intlen_u.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:27:42 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/15 16:27:42 by cmansey          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:15:45 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	ft_intlenu(int nb, char c)
+int	ft_intlenu(int nb)
 {
 	int	i;
 	int	number;
-	int	neg;
 
 	i = 0;
 	if (!nb)
 		return (1);
 	if (nb < 0)
-	{
-		neg = 9;
-	}
+		return (10);
 	else
-	{
-		neg = 0;
-		number = nb;
-	}
+	number = nb;
 	while (number)
 	{
 		number /= 10;
 		i++;
 	}
-	return (i + neg);
+	return (i);
 }

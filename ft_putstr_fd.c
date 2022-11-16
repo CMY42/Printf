@@ -6,11 +6,11 @@
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:55:51 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/14 10:26:41 by cmansey          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:15:11 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 void	ft_putstr_fd(char *s, int fd)
 {

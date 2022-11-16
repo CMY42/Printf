@@ -1,220 +1,70 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_print.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmansey <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 10:38:01 by cmansey           #+#    #+#             */
-/*   Updated: 2022/11/14 16:49:09 by cmansey          ###   ########.fr       */
+/*   Created: 2022/11/15 16:38:28 by cmansey           #+#    #+#             */
+/*   Updated: 2022/11/16 13:56:51 by cmansey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
-#include <stdarg.h>
+#include "ft_printf.h"
 
-typedef struct s_sc
+int	ft_search_arg(va_list arg, const char *str, int len)
 {
-	int	len;
-	int	widht;
-}			t_sc;
-
-void	ft_printhexa(unsigned long long x, const char str)
-{
-	if (x == 0)
+	if (*str == 'd' || *str == 'i' || *str == 'x' || *str == 'X' )
 	{
-		write (1, "0", 1);
-	}
-	else if (x != 0)
-	{
-		if (x >= 16)
-		{
-			ft_printhexa(x / 16, str);
-			ft_printhexa(x % 16, str);
-		}
-		else
-		{
-			if (x <= 9)
-				ft_putchar_fd((x + '0'), 1);
-			else
-			{
-				if (str == 'x' || str == 'p')
-					ft_putchar_fd((x - 10 + 'a'), 1);
-				if (str == 'X')
-					ft_putchar_fd((x - 10 + 'A'), 1);
-			}
-		}
-	}
-}
-
-int	ft_intlenhexa(unsigned long long nb)
-{
-	int	len;
-
-	len = 0;
-	if (nb == 0)
-		return (1);
-	while (nb)
-	{
-		len++;
-		nb = nb / 16;
-	}
-	return (len);
-}
-
-int	ft_printp(unsigned long long p, const char str)
-{
-	int	i;
-
-	i = 0;
-	i += write(1, "0x", 2);
-	if (p == 0)
-		i += write(1, "0", 1);
-	else
-	{
-		ft_printhexa(p, str);
-		i += ft_intlenhexa((unsigned long) p);
-	}
-	return (i);
-}
-
-//VALEUR RETOUR
-int	ft_intlen(int nb, char c)
-{
-	int	i;
-	int	number;
-	int	neg;
-
-	i = 0;
-	if (!nb)
-		return (1);
-	if (nb < 0 && (c == 'd' || c == 'i'))
-	{
-		neg = 1;
-		number = -nb;
-	}
-	else if (nb < 0 && (c == 'u'))
-	{
-		neg = 9;
-	}
-	else
-	{
-		neg = 0;
-		number = nb;
-	}
-	if (c == 'd' || c == 'i' || c == 'u')
-	{
-		while (number)
-		{
-			number /= 10;
-			i++;
-		}
-		return (i + neg);
-	}
-	return (0);
-}
-
-const char	*ft_search_arg(va_list arg, const char *str, t_sc *sc)
-{
-	int				d;
-	char			*s;
-	unsigned int	x;
-	int				c;
-	unsigned int	u;
-	unsigned long	p;
-
-	if (*str == 'd' || *str == 'i')
-	{
-		d = va_arg(arg, int);
-		ft_putnbr_fd(d, 1);
-		(*sc).len += ft_intlen(d, *str);
+		len = ft_search_arg_1(arg, str, len);
 	}
 	else if (*str == 's')
 	{
-		s = va_arg(arg, char *);
-		if (!s)
-		{
-			write (1, "(null)", 6);
-			(*sc).len += 6;
-		}
-		else
-		{
-			ft_putstr_fd(s, 1);
-			(*sc).len += ft_strlen(s);
-		}
+		len = ft_search_arg_2(arg, len);
 	}
-	else if (*str == 'x' || *str == 'X')
+	else if (*str == 'c' || *str == 'u' || *str == 'p')
 	{
-		x = va_arg(arg, unsigned long);
-		ft_printhexa((unsigned long long)x, *str);
-		(*sc).len += ft_intlenhexa((unsigned long)x);
-	}
-	else if (*str == 'c')
-	{
-		c = va_arg(arg, int);
-		write(1, &c, 1);
-		(*sc).len += 1;
+		len = ft_search_arg_3(arg, str, len);
 	}
 	else if (*str == '%')
 	{
 		write(1, "%", 1);
-		(*sc).len += 1;
+		len += 1;
 	}
-	else if (*str == 'u')
-	{
-		u = va_arg(arg, unsigned int);
-		ft_putnbru_fd(u, 1);
-		(*sc).len += ft_intlen(u, *str);
-	}
-	else if (*str == 'p')
-	{
-		p = va_arg(arg, unsigned long long);
-		(*sc).len += ft_printp((unsigned long long)p, *str);
-	}
-	else
-		return (NULL);
-	str++;
-	return (str);
+	return (len);
 }
 
-//CAS OU PAS DE % OU VIENT APRES
-const char	*ft_read_text(t_sc *sc, const char *str)
+int	ft_strnull(va_list arg, int len)
 {
-	char	*prev;
-
-	prev = ft_strchr(str, '%');
-	if (prev)
-	(*sc).widht = prev - str;
-	else
-	(*sc).widht = ft_strlen(str);
-	write(1, str, (*sc).widht);
-	(*sc).len += (*sc).widht;
-	while (*str && *str != '%')
-	str++;
-	return (str);
+	write(1, "(null)", 6);
+	va_end(arg);
+	return (len);
 }
 
 int	ft_printf(const char *str, ...)
 {
 	va_list	arg;
-	t_sc	sc;
+	int		len;
 
 	va_start (arg, str);
-	sc.len = 0;
-	sc.widht = 0;
+	len = 0;
 	while (*str)
 	{
 		if (*str == '%')
-		str = ft_search_arg(arg, str + 1, &sc);
+		{
+			len = ft_search_arg(arg, str + 1, len);
+			str += 2;
+		}
 		else
-		str = ft_read_text(&sc, str);
+		{
+			write(1, &*str++, 1);
+			len ++;
+		}
 		if (!str)
 		{
-			write(1, "(null)", 6);
-			va_end(arg);
-			return (sc.len);
+			ft_strnull(arg, len);
 		}
 	}
 	va_end(arg);
-	return (sc.len);
+	return (len);
 }
